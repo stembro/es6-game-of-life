@@ -13,7 +13,8 @@
     "prebuild": "npm-run-all clean-dist lint",
     "build": "babel-node tools/build.js",
     "postbuild": "cp src/index.html dist/",
-    "deploy": "surge ./dist"
+    "predeploy": "npm build -s",
+    "deploy": "surge --domain es6-game-of-life.surge.sh ./dist"
   },
   "author": "",
   "license": "ISC",
