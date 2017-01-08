@@ -6,6 +6,7 @@ export default {
     devtool: 'cheap-module-eval-source-map',
     noInfo: false,
     entry: [
+        'webpack-hot-middleware/client?reload=true',
         './src/index'
     ],
     target: 'web',
@@ -18,7 +19,8 @@ export default {
         contentBase: './src'
     },
     plugins: [
-        new webpack.NoErrorsPlugin()
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoErrorsPlugin()
     ],
     resolveLoader: {
       root: path.resolve(__dirname, 'node_modules')
