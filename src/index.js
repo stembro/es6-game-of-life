@@ -1,3 +1,3 @@
-import chalk from 'chalk';
-
-console.log(chalk.green('react tutorial'));
+document.addEventListener('DOMContentLoaded', event => {
+  document.querySelector('#app').innerHTML = '<h1>App Loaded!</h1>';
+});

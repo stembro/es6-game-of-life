@@ -2,12 +2,10 @@ import webpack from 'webpack';
 import path from 'path';
 
 export default {
-    debug: true,
-    devtool: 'cheap-module-eval-source-map',
-    noInfo: false,
-    entry: [
-        './src/index'
-    ],
+    debug: false,
+    devtool: 'source-map',
+    noInfo: true,
+    entry: './src/index',
     target: 'web',
     output: {
         path: __dirname + '/dist',
@@ -15,17 +13,18 @@ export default {
         filename: 'app.js'
     },
     devServer: {
-        contentBase: './src'
+        contentBase: './dist'
     },
     plugins: [
-        new webpack.NoErrorsPlugin()
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin()
     ],
     resolveLoader: {
       root: path.resolve(__dirname, 'node_modules')
     },
     module: {
         loaders: [
-            { test: /\.js$/, include: path.resolve(__dirname, 'src'), loaders: ['babel'] }
+            { test: /\.js$/, include: path.resolve(__dirname, 'src'), loader: 'babel' }
         ]
     }
 };

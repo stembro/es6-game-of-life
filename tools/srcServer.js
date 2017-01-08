@@ -1,7 +1,7 @@
 import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
-import config from '../webpack.config.dev';
+import webpackConfig from '../webpack.config.dev';
 import open from 'open';
 import chalk from 'chalk';
 
@@ -9,11 +9,11 @@ import chalk from 'chalk';
 
 const port = 3000;
 const app = express();
-const compiler = webpack(config);
+const compiler = webpack(webpackConfig);
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
-  publicPath: config.output.publicPath
+  publicPath: webpackConfig.output.publicPath
 }));
 
 app.get('*', function(req, res) {
