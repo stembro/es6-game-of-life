@@ -12,7 +12,7 @@
     "clean-dist": "rimraf ./dist && mkdir dist",
     "prebuild": "npm-run-all clean-dist lint",
     "build": "babel-node tools/build.js",
-    "postbuild": "cp src/index.html dist/",
+    "postbuild": "cp src/index.html dist/ && cp src/style.css dist/",
     "predeploy": "npm build -s",
     "deploy": "surge --domain es6-game-of-life.surge.sh ./dist"
   },
