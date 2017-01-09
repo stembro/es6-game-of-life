@@ -8,10 +8,10 @@ The current javascript ecosystem can be difficult to wrap your mind around. This
 - Learning how to set up and use a more modern javascript development environment
 
 Get started quickly by cloning the repo and then:
-`npm install`
-`npm start -s`
+* `npm install`
+* `npm start -s`
 
 A production build can be generated via:
-`npm run build`
+* `npm run build`
 
 Check out the [Hosted Demo](http://es6-game-of-life.surge.sh/)!
