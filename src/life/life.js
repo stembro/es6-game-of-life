@@ -3,15 +3,18 @@ import ArrayUtils from '../utils/array';
 const CELL_DEAD = 0;
 const CELL_ALIVE = 1;
 
-function countLivingNeighbors(board, x, y) {
+function countNeighbors(board, x, y) {
   let height = board.length;
   let width = board[0].length;
   let count = 0;
+
   for(let dy = -1; dy < 2; dy++) {
 		for(let dx = -1; dx < 2; dx++) {
       let xdx = x + dx;
       let ydy = y + dy;
-      if(xdx < 0 || ydy < 0 || xdx >= width || ydy >= height) {
+      if((dx === 0 && dy === 0) ||
+         (xdx < 0 || ydy < 0) ||
+         (xdx >= width || ydy >= height)) {
         continue;
       }
       if(board[ydy][xdx] === CELL_ALIVE) {
@@ -27,30 +30,36 @@ export default class GameOfLife {
     this.board = ArrayUtils.clone2dArray(board);
   }
 
-  *evolve() {
+  *evolutions() {
     let isTrue = true;
     while (isTrue) {
-      let diff = {};
+      let diff = [];
       let height = this.board.length;
       let width = this.board[0].length;
       this.previousBoard = ArrayUtils.clone2dArray(this.board);
 
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
-          let livingNeighborCount = countLivingNeighbors(this.previousBoard, x, y);
-          debugger;
-          let isAlive = !!this.board[y][x];
+          let neighbors = countNeighbors(this.previousBoard, x, y);
+          let alive = !!this.board[y][x];
 
-          if (isAlive) {
-            if (livingNeighborCount < 2 || livingNeighborCount > 3) {
+          if (alive) {
+            if (neighbors < 2 || neighbors > 3) {
               this.board[y][x] = CELL_DEAD;
-              diff[`r${x}c${y}`] = CELL_DEAD;
             }
           } else {
-            if (livingNeighborCount === 3) {
+            if (neighbors === 3) {
               this.board[y][x] = CELL_ALIVE;
-              diff[`r${x}c${y}`] = CELL_ALIVE;
             }
+          }
+
+          if (this.board[y][x] !== this.previousBoard[y][x]) {
+            diff.push({
+              x: x,
+              y: y,
+              selector: `row${x}col${y}`,
+              state: this.board[y][x]
+            });
           }
         }
       }
