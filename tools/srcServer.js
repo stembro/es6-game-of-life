@@ -5,8 +5,10 @@ import webpackConfig from '../webpack.config.dev';
 import open from 'open';
 import chalk from 'chalk';
 
-const port = process.env.PORT || 3000;
-const host = process.env.IP || 'http://localhost';
+const port = process.env.PORT || 4326;
+const host = process.env.IP || 'localhost';
+
+console.log(`Starting on ${host}:${port}`);
 
 const app = express();
 const compiler = webpack(webpackConfig);
