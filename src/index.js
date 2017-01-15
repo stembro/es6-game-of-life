@@ -5,29 +5,60 @@ import GameOfLifeEvents from './life/lifeEvents';
   let width = 10;
   let height = 10;
   let diff = [{x:5,y:3,state:1},{x:6,y:3,state:1},{x:7,y:3,state:1}];
-  let root = document.querySelector('#app');
+  let game = null;
+  let $root = document.querySelector('#app');
+  let $start = document.querySelector("#start");
+  let $stop = document.querySelector("#stop");
+  let $step = document.querySelector("#step");
+  let $reset = document.querySelector("#reset");
+  let $board = null;
+  let evolutionInterval = null;
 
-  root.addEventListener(GameOfLifeEvents.BOARD_LOADED.Name, event => {
-    document.querySelector("#start").addEventListener('click', event =>  {
+  $start.addEventListener('click', event =>  {
+    if (!game) {
+      game = new GameOfLifeBoard(width, height, diff, $root);
+    }
 
-    });
-
-    document.querySelector("#stop").addEventListener('click', event =>  {
-
-    });
-
-    document.querySelector("#step").addEventListener('click', event =>  {
+    $start.disabled = true;
+    $step.disabled = true;
+    $stop.disabled = false;
+    evolutionInterval = setInterval(() => {
       game.next();
-    });
+    },500);
+  });
 
-    document.querySelector("#reset").addEventListener('click', event =>  {
+  $stop.addEventListener('click', event =>  {
+      clearInterval(evolutionInterval);
+      $start.disabled = false;
+      $step.disabled = false;
+      $stop.disabled = true;
+  });
 
-    });
+  $step.addEventListener('click', event =>  {
+    if (!game) {
+      game = new GameOfLifeBoard(width, height, diff, $root);
+    }
+    game.next();
+  });
 
-    root.querySelector('#gameoflifeboard').addEventListener('click', event => {
+  $reset.addEventListener('click', event =>  {
+      clearInterval(evolutionInterval);
+      $board.remove();
+      $board = null;
+      game = new GameOfLifeBoard(width, height, diff, $root);
+      $start.disabled = false;
+      $step.disabled = false;
+      $stop.disabled = true;
+  });
 
+  $root.addEventListener(GameOfLifeEvents.BOARD_LOADED.Name, event => {
+    $board = $root.querySelector('#gameoflifeboard');
+
+    $board.addEventListener('click', event => {
+      //TODO: Handle update of board based on user input
     });
   });
 
-  let game = new GameOfLifeBoard(width,height,diff, root);
+  $start.click();
+
 }());
