@@ -11,6 +11,7 @@ import GameOfLifeEvents from './life/lifeEvents';
   let $step = document.querySelector("#step");
   let $reset = document.querySelector("#reset");
   let $gpm = document.querySelector("#generationsPerMinute");
+  let $randomized = document.querySelector("#randomized");
   let $board = null;
   let evolutionInterval = null;
   let running = false;
@@ -51,11 +52,12 @@ import GameOfLifeEvents from './life/lifeEvents';
   });
 
   $reset.addEventListener('click', event =>  {
+      let diff = $randomized.checked ? getRandomDiff(width, height) : [];
       clearInterval(evolutionInterval);
       running = false;
       $board.remove();
       $board = null;
-      game = new GameOfLifeBoard(width, height, getRandomDiff(width, height), $root);
+      game = new GameOfLifeBoard(width, height, diff, $root);
       $start.disabled = false;
       $step.disabled = false;
       $stop.disabled = true;
