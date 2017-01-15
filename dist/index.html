@@ -2,9 +2,46 @@
 <html>
 <head>
     <title>ES6 Game of Life</title>
-    <link rel="stylesheet" type="text/css" src="style.css">
+    <style>
+    #app * {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    #app table {
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+
+    #app table td {
+      width:15px;
+      height:15px;
+      border: 1px solid gray;
+    }
+
+    #app table td .cell {
+      height: 100%;
+      width: 100%;
+    }
+
+    #app table td .alive {
+      background-color: #000000;
+    }
+
+    #app table td .cell:hover {
+      background-color: lightblue;
+      cursor: pointer;
+    }
+
+    </style>
 </head>
 <body>
+    <div id="controls">
+      <button id="start" disabled>Start</button>
+      <button id="stop" disabled>Stop</button>
+      <button id="step">Step</button>
+      <button id="reset" disabled>Reset</button>
+    </div>
     <div id="app"></div>
     <script src="./app.js"></script>
 </body>
