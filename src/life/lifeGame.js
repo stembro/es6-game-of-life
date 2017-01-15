@@ -29,6 +29,11 @@ export class Game {
     return ArrayUtils.clone2dArray(this[s_board]);
   }
 
+  toggleCell(x,y) {
+    this[s_board][y][x] = this[s_board][y][x] === CELL_ALIVE ? CELL_DEAD : CELL_ALIVE;
+    return this[s_board][y][x];
+  }
+
   *start() {
     let isTrue = true;
     if (this.height === 0 || this.width === 0) {
