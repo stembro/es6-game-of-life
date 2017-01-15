@@ -1,23 +1,33 @@
-import GameOfLife from './life/life';
+import {GameOfLifeBoard} from './life/lifeBoard';
+import GameOfLifeEvents from './life/lifeEvents';
 
 (function() {
-  let board = [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,1,1,1,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-  ];
+  let width = 10;
+  let height = 10;
+  let diff = [{x:5,y:3,state:1},{x:6,y:3,state:1},{x:7,y:3,state:1}];
+  let root = document.querySelector('#app');
 
-  let game = new GameOfLife(board);
-  let evolutions = game.evolutions();
+  root.addEventListener(GameOfLifeEvents.BOARD_LOADED.Name, event => {
+    document.querySelector("#start").addEventListener('click', event =>  {
 
-  let evolutionInterval = setInterval(() => {
-    document.querySelector('#app').innerHTML = game.toString('<br>');
-    let diff = evolutions.next().value.diff;
-    if(Object.getOwnPropertyNames(diff).length === 0) {
-      clearInterval(evolutionInterval);
-    }
-  },500);
+    });
 
+    document.querySelector("#stop").addEventListener('click', event =>  {
+
+    });
+
+    document.querySelector("#step").addEventListener('click', event =>  {
+      game.next();
+    });
+
+    document.querySelector("#reset").addEventListener('click', event =>  {
+
+    });
+
+    root.querySelector('#gameoflifeboard').addEventListener('click', event => {
+
+    });
+  });
+
+  let game = new GameOfLifeBoard(width,height,diff, root);
 }());
