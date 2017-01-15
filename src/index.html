@@ -8,9 +8,10 @@
       margin: 0px;
     }
 
-    #app table {
+    #gameoflifeboard {
       border-spacing: 0;
       border-collapse: collapse;
+      margin-top: 5px;
     }
 
     #app table td {
@@ -40,6 +41,7 @@
       <button id="stop" disabled>Stop</button>
       <button id="step">Step</button>
       <button id="reset">Reset</button>
+      <input type="range" id="generationsPerMinute" value="100" min="60" max="5000" step="1">
     </div>
     <div id="app"></div>
     <script src="./app.js"></script>

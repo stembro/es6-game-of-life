@@ -2,17 +2,31 @@ import {GameOfLifeBoard} from './life/lifeBoard';
 import GameOfLifeEvents from './life/lifeEvents';
 
 (function() {
-  let width = 10;
-  let height = 10;
-  let diff = [{x:5,y:3,state:1},{x:6,y:3,state:1},{x:7,y:3,state:1}];
+  let width = 100;
+  let height = 40;
+  let diff = getRandomDiff(width,height);
   let $root = document.querySelector('#app');
   let $start = document.querySelector("#start");
   let $stop = document.querySelector("#stop");
   let $step = document.querySelector("#step");
   let $reset = document.querySelector("#reset");
+  let $gpm = document.querySelector("#generationsPerMinute");
   let $board = null;
   let evolutionInterval = null;
   let running = false;
+  let generationsPerMinute = 120;
+
+  function getRandomDiff(w, h) {
+    let totalCellsToActivate = Math.floor(Math.random() * w*h);
+    let diff = [];
+    while (totalCellsToActivate > 0) {
+      let randomX = Math.floor(Math.random()*w);
+      let randomY = Math.floor(Math.random()*h);
+      diff.push({x:randomX,y:randomY,state:1});
+      totalCellsToActivate--;
+    }
+    return diff;
+  }
 
   $start.addEventListener('click', event =>  {
     $start.disabled = true;
@@ -21,7 +35,7 @@ import GameOfLifeEvents from './life/lifeEvents';
     running = true;
     evolutionInterval = setInterval(() => {
       game.next();
-    },500);
+    },1000*(60/generationsPerMinute));
   });
 
   $stop.addEventListener('click', event =>  {
@@ -41,7 +55,7 @@ import GameOfLifeEvents from './life/lifeEvents';
       running = false;
       $board.remove();
       $board = null;
-      game = new GameOfLifeBoard(width, height, diff, $root);
+      game = new GameOfLifeBoard(width, height, getRandomDiff(width, height), $root);
       $start.disabled = false;
       $step.disabled = false;
       $stop.disabled = true;
@@ -74,6 +88,13 @@ import GameOfLifeEvents from './life/lifeEvents';
     $stop.disabled = true;
     alert("Board has stabilized!");
   });
+
+  $gpm.addEventListener('change', event => {
+    generationsPerMinute = +event.target.value;
+    $stop.click();
+    $start.click();
+  });
+
 
   let game = new GameOfLifeBoard(width, height, diff, $root);
 
