@@ -14,4 +14,12 @@ Get started quickly by cloning the repo and then:
 A production build can be generated via:
 * `npm run build`
 
+The game supports the following features:
+- User-defined grid size (set via query string (e.g., ?w=100&h=40))
+- Auto-run ('start' button or set via query string (e.g., ?r=true))
+- Randomized board (check the checkbox and then click reset or set via query string (e.g., ?d=r))
+- Creating a custom board (click into cells to toggle state or set via query string (e.g., ?d=1,1;1,2;1,3))
+- Single-step through generations ('step' button)
+- User-defined evolution speed (use the slider or set via query string (e.g., ?gpm=2500 to run 2500 generations per minute))
+
 Check out the [Hosted Demo](http://es6-game-of-life.surge.sh/)!
