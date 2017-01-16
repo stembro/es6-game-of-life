@@ -103,7 +103,7 @@ function countNeighbors(board, x, y) {
 function getBoardFromDiff(width, height, diff) {
     let board = ArrayUtils.initialize2dArray(width, height, CELL_DEAD);
     diff.forEach(function(value) {
-      if (value.x > 0 && value.x < width && value.y > 0 && value.y < height) {
+      if (value.x >= 0 && value.x < width && value.y >= 0 && value.y < height) {
         board[value.y][value.x] = value.state;
       }
     });

@@ -1,10 +1,8 @@
 import {GameOfLifeBoard} from './life/lifeBoard';
 import GameOfLifeEvents from './life/lifeEvents';
+import * as QueryStringHelper from './utils/querystring';
 
 (function() {
-  let width = 100;
-  let height = 40;
-  let diff = getRandomDiff(width,height);
   let $root = document.querySelector('#app');
   let $start = document.querySelector("#start");
   let $stop = document.querySelector("#stop");
@@ -14,8 +12,47 @@ import GameOfLifeEvents from './life/lifeEvents';
   let $randomized = document.querySelector("#randomized");
   let $board = null;
   let evolutionInterval = null;
-  let running = false;
-  let generationsPerMinute = 120;
+
+  let defaults = {
+    width: 100,
+    height: 40,
+    diff: $randomized.checked ? getRandomDiff(function(){return this.width;}, function(){return this.height;}) : [],
+    running: false,
+    generationsPerMinute: 120,
+    randomize: $randomized.checked
+  };
+
+  let qsParams = QueryStringHelper.getParams(window.location.search);
+
+  if (Number.isInteger(+qsParams.w) && +qsParams.w > 0 && +qsParams.w <= 1000) {
+    defaults.width = +qsParams.w;
+  }
+
+  if (Number.isInteger(+qsParams.h) && +qsParams.h > 0 && +qsParams.h <= 1000) {
+    defaults.height = +qsParams.h;
+  }
+
+  if (Number.isInteger(+qsParams.gpm) && +qsParams.gpm >= +$gpm.min && +qsParams.gpm <= +$gpm.max) {
+    defaults.generationsPerMinute = +qsParams.gpm;
+  }
+
+  if (qsParams.r !== undefined) {
+    defaults.running = !!qsParams.r;
+  }
+
+  if (qsParams.d) {
+    if (qsParams.d === 'r') {
+      if (!$randomized.checked) {
+        defaults.randomize = true;
+        defaults.diff = getRandomDiff(defaults.width, defaults.height);
+      }
+    } else {
+      defaults.randomize = false;
+      defaults.diff = getQueryStringDiff(qsParams.d);
+    }
+  }
+
+  let values = JSON.parse(JSON.stringify(defaults));
 
   function getRandomDiff(w, h) {
     let totalCellsToActivate = Math.floor(Math.random() * w*h);
@@ -29,19 +66,33 @@ import GameOfLifeEvents from './life/lifeEvents';
     return diff;
   }
 
+  function getQueryStringDiff(qsDiff) {
+    let diff = [];
+    let coordinatePairs = qsDiff.split(';');
+    coordinatePairs.forEach(pair => {
+      let [x,y] = pair.split(',');
+      diff.push({
+        x: x,
+        y: y,
+        state: 1
+      });
+    });
+    return diff;
+  }
+
   $start.addEventListener('click', event =>  {
     $start.disabled = true;
     $step.disabled = true;
     $stop.disabled = false;
-    running = true;
+    values.running = true;
     evolutionInterval = setInterval(() => {
       game.next();
-    },1000*(60/generationsPerMinute));
+    },1000*(60/values.generationsPerMinute));
   });
 
   $stop.addEventListener('click', event =>  {
       clearInterval(evolutionInterval);
-      running = false;
+      values.running = false;
       $start.disabled = false;
       $step.disabled = false;
       $stop.disabled = true;
@@ -52,12 +103,12 @@ import GameOfLifeEvents from './life/lifeEvents';
   });
 
   $reset.addEventListener('click', event =>  {
-      let diff = $randomized.checked ? getRandomDiff(width, height) : [];
+      values.diff = $randomized.checked ? getRandomDiff(values.width, values.height) : [];
       clearInterval(evolutionInterval);
-      running = false;
+      values.running = false;
       $board.remove();
       $board = null;
-      game = new GameOfLifeBoard(width, height, diff, $root);
+      game = new GameOfLifeBoard(values.width, values.height, values.diff, $root);
       $start.disabled = false;
       $step.disabled = false;
       $stop.disabled = true;
@@ -67,7 +118,7 @@ import GameOfLifeEvents from './life/lifeEvents';
     $board = $root.querySelector('#gameoflifeboard');
 
     $board.addEventListener('click', event => {
-      if (running) {
+      if (values.running) {
         return;
       }
 
@@ -84,7 +135,7 @@ import GameOfLifeEvents from './life/lifeEvents';
 
   $root.addEventListener(GameOfLifeEvents.BOARD_STABILIZED.Name, event => {
     clearInterval(evolutionInterval);
-    running = false;
+    values.running = false;
     $start.disabled = true;
     $step.disabled = true;
     $stop.disabled = true;
@@ -92,12 +143,18 @@ import GameOfLifeEvents from './life/lifeEvents';
   });
 
   $gpm.addEventListener('change', event => {
-    generationsPerMinute = +event.target.value;
+    values.generationsPerMinute = +event.target.value;
     $stop.click();
     $start.click();
   });
 
+  let game = new GameOfLifeBoard(values.width, values.height, values.diff, $root);
 
-  let game = new GameOfLifeBoard(width, height, diff, $root);
+  $gpm.value = values.generationsPerMinute;
+  $randomized.checked = values.randomize;
+
+  if (values.running) {
+    $start.click();
+  }
 
 }());
