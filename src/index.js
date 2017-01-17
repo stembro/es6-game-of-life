@@ -1,6 +1,7 @@
 import {GameOfLifeBoard} from './life/lifeBoard';
 import GameOfLifeEvents from './life/lifeEvents';
 import * as QueryStringHelper from './utils/querystring';
+import style from './style.css';
 
 (function() {
   let $root = document.querySelector('#app');

@@ -27,7 +27,8 @@ export default {
     },
     module: {
         loaders: [
-            { test: /\.js$/, include: path.resolve(__dirname, 'src'), loaders: ['babel'] }
+            { test: /\.js$/, include: path.resolve(__dirname, 'src'), loaders: ['babel'] },
+            {test: /\.css$/, loaders: ['style','css']}
         ]
     }
 };
