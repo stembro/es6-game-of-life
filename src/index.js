@@ -145,8 +145,10 @@ import style from './style.css';
 
   $gpm.addEventListener('change', event => {
     values.generationsPerMinute = +event.target.value;
-    $stop.click();
-    $start.click();
+    if (values.running) {
+      $stop.click();
+      $start.click();
+    }
   });
 
   let game = new GameOfLifeBoard(values.width, values.height, values.diff, $root);
