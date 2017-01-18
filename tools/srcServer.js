@@ -8,7 +8,7 @@ import chalk from 'chalk';
 const port = process.env.PORT || 3000;
 const host = process.env.IP || 'localhost';
 
-console.log(`Starting on ${host}:${port}`);
+console.log(`Starting on ${host}:${port}`); // eslint-disable-line no-console
 
 const app = express();
 const compiler = webpack(webpackConfig);

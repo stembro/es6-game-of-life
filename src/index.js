@@ -1,7 +1,7 @@
 import {GameOfLifeBoard} from './life/lifeBoard';
 import GameOfLifeEvents from './life/lifeEvents';
 import * as QueryStringHelper from './utils/querystring';
-import style from './style.css';
+import style from './style.css'; // eslint-disable-line no-unused-vars
 
 (function() {
   let $root = document.querySelector('#app');
@@ -81,7 +81,7 @@ import style from './style.css';
     return diff;
   }
 
-  $start.addEventListener('click', event =>  {
+  $start.addEventListener('click', () =>  {
     $start.disabled = true;
     $step.disabled = true;
     $stop.disabled = false;
@@ -91,7 +91,7 @@ import style from './style.css';
     },1000*(60/values.generationsPerMinute));
   });
 
-  $stop.addEventListener('click', event =>  {
+  $stop.addEventListener('click', () =>  {
       clearInterval(evolutionInterval);
       values.running = false;
       $start.disabled = false;
@@ -99,11 +99,11 @@ import style from './style.css';
       $stop.disabled = true;
   });
 
-  $step.addEventListener('click', event =>  {
+  $step.addEventListener('click', () =>  {
     game.next();
   });
 
-  $reset.addEventListener('click', event =>  {
+  $reset.addEventListener('click', () =>  {
       values.diff = $randomized.checked ? getRandomDiff(values.width, values.height) : [];
       clearInterval(evolutionInterval);
       values.running = false;
@@ -115,7 +115,7 @@ import style from './style.css';
       $stop.disabled = true;
   });
 
-  $root.addEventListener(GameOfLifeEvents.BOARD_LOADED.Name, event => {
+  $root.addEventListener(GameOfLifeEvents.BOARD_LOADED.Name, () => {
     $board = $root.querySelector('#gameoflifeboard');
 
     $board.addEventListener('click', event => {
@@ -134,16 +134,16 @@ import style from './style.css';
     });
   });
 
-  $root.addEventListener(GameOfLifeEvents.BOARD_STABILIZED.Name, event => {
+  $root.addEventListener(GameOfLifeEvents.BOARD_STABILIZED.Name, () => {
     clearInterval(evolutionInterval);
     values.running = false;
     $start.disabled = true;
     $step.disabled = true;
     $stop.disabled = true;
-    alert("Board has stabilized!");
+    alert(`Board has stabilized!`); // eslint-disable-line no-alert
   });
 
-  $gpm.addEventListener('change', event => {
+  $gpm.addEventListener(`change`, event => {
     values.generationsPerMinute = +event.target.value;
     if (values.running) {
       $stop.click();

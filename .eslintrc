@@ -13,20 +13,19 @@
   "env": {
     "es6": true,
     "browser": true,
-    "node": true,
-    "mocha": true
+    "node": true
   },
   "rules": {
-    "quotes": 0,
-    "no-console": 1,
-    "no-debugger": 1,
-    "no-var": 1,
-    "semi": [1, "always"],
-    "no-trailing-spaces": 0,
-    "eol-last": 0,
-    "no-unused-vars": 0,
-    "no-underscore-dangle": 0,
-    "no-alert": 0,
-    "no-lone-blocks": 0
+    "quotes": "off",
+    "no-console": "warn",
+    "no-debugger": "warn",
+    "no-var": "warn",
+    "semi": ["error", "always"],
+    "no-trailing-spaces": "off",
+    "eol-last": "off",
+    "no-unused-vars": "warn",
+    "no-underscore-dangle": "warn",
+    "no-alert": "warn",
+    "no-lone-blocks": "warn"
   }
 }
